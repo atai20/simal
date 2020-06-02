@@ -1,0 +1,42 @@
+*{
+  outline: none;
+}
+body{
+  background:grey;
+}
+#login-box {
+  margin-top: 120px;
+  max-width: 600px;
+  padding-bottom:20px;
+  border: 1px solid #9C9C9C;
+  background-color: #EAEAEA;
+}
+#login-form {
+  padding: 20px;
+}
+#register-link {
+  margin-top: -85px;
+}
+.card{
+  margin-top: 30px;
+  margin-bottom: 10px;
+  min-width: 18rem;
+}
+.avatar{
+  width: 30px;
+}
+.alert alert-danger{
+  max-width:510px;
+  width:100%;
+  margin:auto;
+  margin-top:20px;}
+.account{
+  width:100px
+}
+.form-inline{
+  margin-top:0;
+  margin-block-end: 0;
+}
+.navbar navbar-expand-lg navbar-dark bg-dark {
+  background: #1B92AD;
+}

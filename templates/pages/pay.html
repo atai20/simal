@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1"> <!-- Ensures optimal rendering on mobile devices. -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" /> <!-- Optimal Internet Explorer compatibility -->
+</head>
+<script src="http://code.jquery.com/jquery-1.8.3.js"></script>
+<script src="https://www.paypalobjects.com/api/checkout.js"></script>
+ 
+<div id="paypal-button-container"></div>
+
+<script>
+  paypal.Buttons({
+    createOrder: function (data, actions) {
+      return fetch('/my-server/create-order', {
+        method: 'POST'
+      }).then(function(res) {
+        return res.json();
+      }).then(function(data) {
+        return data.id;
+      });
+    },
+    onApprove: function (data, actions) {
+      return fetch('/my-server/capture-order/' + data.orderID, {
+        method: 'POST'
+      }).then(function(res) {
+        if (!res.ok) {
+          alert('Something went wrong');
+        }
+      });
+    }
+  }).render('#paypal-button-container');
+</script>
