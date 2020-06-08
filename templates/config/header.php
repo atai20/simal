@@ -65,7 +65,7 @@ if (isset($_POST['exit'])){
   header('Location: ?page=companies');
   exit;
 }
-$sql_notif = R::findAll( 'users', 'ORDER BY `id`') or die('database problem');
+$sql_notif = R::findAll( 'tbl_product_detail') or die('database problem');
 $notif_counter = 0;
 foreach ($sql_notif as $result) {
     if($result['comp_name_user'] == $username and $result['status'] == 0 and $username!=''){
@@ -139,6 +139,6 @@ foreach ($sql_notif as $result) {
         cursor:pointer;
     }
     body{
-        background:#E5FFE6;
+        background:#E8F4EF;
     }
 </style>

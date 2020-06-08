@@ -1,72 +1,62 @@
 <?php
 require('another_page.php');
-$sql = R::findAll("users", 'ORDER BY `invested_money`') or die('database error1');
-echo '<table class="table table-dark">
-  <thead>
-    <tr>
-    <th scope="col">place</th>
-      <th scope="col">login</th>
-      <th scope="col">all invested money</th>
+echo '
+<div style="margin:auto; max-width:1000px">
+<table class="table table-light table-bordered"style="margin-top:40px;">
+  <thead style="background:#28B9C2;color:white;">
+    <tr >
+    <th scope="col"style="border-top:none;width:40px">place</th>
+      <th scope="col"style="border-top:none;">login</th>
+      <th scope="col"style="border-top:none;">all invested money</th>
     </tr>
   </thead>';
-$top_users[] = null;
-$sql_best_comp =  R::findAll('tbl_product_detail', 'ORDER BY `donated_money`') or die('database error2');
-foreach ($sql as $result) {
-    $invested_money = 0;
-    $top_user = $result["login"];
-    $sql_best_comp = R::find('tbl_product_detail', '`investor_name` = ?', array($result["login"]));
-    foreach  ($sql_best_comp as $result_comp) {
-        $invested_money = $invested_money + $result_comp['donated_money'];
-    }
-    array_push($top_users, $invested_money);
-}
-
-sort($top_users);
-$user_counter[] = null;
-foreach ($top_users as &$value) {
-    if($value == ''){
-        $value = 0;
-    }
-    foreach ($sql_users as $result_2) {
-        $invested_money_2 = 0;
-        $top_user = $result_2["login"];
-        $sql_best_user = R::find('tbl_product_detail',"`investor_name` = ?", array($top_user));
-        foreach ($sql_best_user as $result_best_user) {
-            $invested_money_2 = $invested_money_2 + $result_best_user['donated_money'];
-        }
-        if($invested_money_2 == $value){
-            array_push($user_counter, $top_user);
-        }
-    }
-
-}
 $user_ravn = array_unique($user_counter);
-$i = 0;
 krsort($user_ravn);
 $i_rev = count($user_ravn)-1;
+$i = 0;
 foreach ($user_ravn as &$value) {
     if($value!="") {
-        $sql_avatar = R::find('users', "`login`=?", array($value)) or die('database error5');
-        foreach ($sql_avatar as $result_avatar) {
+        $result_avatar = R::findOne('users', "`login`=?", array($value));
             if($result_avatar['avatar']=='none'){
                 $avatar = 'users/defaults/avatar.png';
             }else{
                 $avatar = $result_avatar['avatar'];
             }
-        }
+
         $i2 = $i+1;
-        echo"<tbody>
-<thead>
+        $task = "";
+        $f_place = "";
+        if($value == $username){
+            $task = 'background:#e0e0e0;';
+        }
+        if($i2 == 1){
+            $f_place = '<img style="width:30px;" src="assets/img/medal.svg">';
+        }
+        ?><tbody>
+<thead style="<?=$task?>">
     <tr>
-    <td scope=\"row\">$i2</td>
-      <td><a href=\"?page=account&user=$value\"><img style='width:30px'src='users/files/$avatar'>$value</img></td>
-      <td>" . $top_users[$i_rev] . "</td>
+    <td scope="row"><?=$i2?><?=$f_place?></td>
+      <td>
+          <a href="?page=account&user=<?=$value?>">
+          <div class="container">
+              <div class="row">
+                    <div class="col"><div style='width:30px;height:30px;border-radius:100%;background-image:url("users/files/<?=$avatar?>");background-size:cover;margin:auto'></div></div>
+                    <div class="col-9"><?=$value?></div>
+              </div>
+          </div>
+          </a>
+      </td>
+      <td><?=$top_users[$i_rev]?></td>
     </tr>
     <thead>
-  </tbody>";
+  </tbody>
+        <?php
     }
     $i_rev--;
     $i++;
+    if($i>=30){
+        exit();
+    }
 
 }
-echo '</table>';
+echo '</table></div>';

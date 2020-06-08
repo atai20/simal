@@ -19,7 +19,7 @@ if($username == ''){
             $username_acc = $result['login'];
             $link = "?page=company&user=" . $username_acc;
             echo '<img class="account"src="users/files/' . $result['avatar'] . '">';
-            if ($result['company_name'] != '') {
+            if ($result['company_name'] != 'none') {
                 echo '
     ' . $username_acc . ', company: <a href=' . $link . '>' . $result['company_name'] . '</a>';
             }

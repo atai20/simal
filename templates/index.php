@@ -61,6 +61,5 @@ echo '
 <style>
 body{
   font-family: \'Josefin Sans\', sans-serif;
-  backgroun:white;
 }
 </style>';

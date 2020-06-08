@@ -2,14 +2,15 @@
 require('another_page.php');
 $username = filter_var(trim($_GET['user']), FILTER_SANITIZE_STRING);
 $file_id = filter_var(trim($_GET['id']), FILTER_SANITIZE_STRING);
-
+if (!($_SESSION['login']==$_GET['user'] and $sql_user['company_name']=='none')){
 if($username == ''){
     header('Location: ?page=error');
 }
-$sql = R::find('data_files', 'user=?', array($username)) or die("Error files_database");
-$result = R::findOne('users', 'login=?', array($username)) or die("Error files_database");
+$sql = R::find('data_files', 'user=?', array($username));
+if($result = R::findOne('users', 'login=?', array($username))){
 
-if(!R::findOne('comp_views', 'user=? AND comp=?', array($_SESSION['login'], $username))){
+
+if(!R::findOne('comp_views', 'user=? AND comp=?', array($_SESSION['login'], $username)) and $_SESSION['login']!=''){
     $comp_views = R::xdispense('comp_views');
     $comp_views ->user = $_SESSION['login'];
     $comp_views ->comp = $username;
@@ -17,7 +18,24 @@ if(!R::findOne('comp_views', 'user=? AND comp=?', array($_SESSION['login'], $use
     R::exec("UPDATE `users` SET `views`=? WHERE `login`= ?", array($result['views']+1, $username));
 }
 
+    if (isset($_POST['delete_account'])){
+        $username = $_SESSION['login'];
+        foreach ($sql as $result_files) {
+            if(!unlink('users/files/' . $result_files["files"] . '')){
+                die('file error');
+            }
+        }
 
+        if(!unlink('users/files/' . $sql_user["company_img"] . '') and !unlink('users/files/' . $sql_user["avatar"] . ''))
+            die('file error');
+
+
+        $result_files = R::exec("DELETE FROM `data_files` WHERE `user` = ?", array($username)) or die("Error ");
+        $result = R::exec("DELETE FROM `users` WHERE `login` = ?", array($username)) or die("Error ");
+        session_destroy();
+        header('Location: ?page=companies');
+        exit;
+    }
 if (isset($_POST['delete'])){
     $username_del = $_SESSION['login'];
     $sqla = R::find('data_files','`user`=? AND `id`=?', array($username_del, $_GET['id'])) or die('error database');
@@ -53,7 +71,7 @@ echo "
     <h2 style="text-transform:uppercase;padding:15px;font-weight:bold"><?=$result['company_name']?></h2>
     <h4><div style="padding:15px;margin-top:-35px;"><b><?=$result['problem']?></b></div></h4>
 
-    <div style="padding:15px;margin-top:-35px;"><?=$result['company_desc']?></div>
+    <div style="padding:15px;word-wrap: break-word;margin-top:-35px;"><?=$result['company_desc']?></div>
     <h5 style="padding:15px;">need <?=$result['futur_money']?>$</h5>
     <h5 style="padding-left:15px;">have <?=$result['money']?>$</h5>
     <?php
@@ -79,29 +97,17 @@ echo "
     echo '</div>';
 }
 
-if (isset($_POST['delete_account'])){
-  $username = $_SESSION['login'];
-      foreach ($sql as $result_files) {
-          if(!unlink('users/files/' . $result_files["files"] . '')){
-              die('file error');
-          }
-      }
-      foreach ($sql_users as $result) {
-          if(!unlink('users/files/' . $result["company_img"] . '') and !unlink('users/files/' . $result["avatar"] . ''))
-              die('file error');
-      }
 
-  $result_files = R::exec("DELETE FROM `data_files` WHERE `user` = ?", array($username)) or die("Error ");
-  $result = R::exec("DELETE FROM `users` WHERE `login` = ?", array($username)) or die("Error ");
-  session_destroy();
-    header('Location: ?page=companies');
-  exit;
-}
 if (isset($_POST['delete_all'])){
     foreach ($sql as $result) {
-        unlink('users/files/'.$result["files"].'');
+        if($result["files"]!=""){
+            unlink('users/files/'.$result["files"].'');
+            $bool = true;
+        }
 }
-$result = R::exec("DELETE FROM `data_files` WHERE `user` = ?", array($_GET['user'])) or die("Error ");
+    if($bool){
+        $result = R::exec("DELETE FROM `data_files` WHERE `user` = ?", array($_GET['user'])) or die("Error ");
+    }
 
 }else{
     echo "<div style='width: 100%;
@@ -158,3 +164,11 @@ if($username == $_SESSION['login']){
         opacity: 100;
     }
 </style>
+<?php
+}else{
+    echo 'company doesn`t exist<br>';
+}
+}else{
+    echo 'you have no company<br>
+    <a href="?page=create_company">create company</a>';
+}

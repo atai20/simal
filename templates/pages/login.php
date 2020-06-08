@@ -4,38 +4,37 @@ if (isset($_POST["submit"])) {
 
 $username = filter_var(trim($_POST["username"]), FILTER_SANITIZE_STRING);
 $password = $_POST["password"];
-$result = R::findOne('users', "login=?", array($username)) or die("database error");
+$result = R::findOne('users', "login=?", array($username));
 
 $bool_ver = password_verify($password, $result['password']);
-
-if($result==True and $bool_ver==True){
-	$_SESSION["login"] = $username;
-    header('Location: ?page=companies');
+    if(!$result==True or !$bool_ver==True){
+        $width = '100%';
+        $padding = '12px';
+        $error = 'this account doesn`t exist or invalid password';
 }else{
-	die('<div style = "max-width:510px; width:100%; margin:auto;margin-top:20px;"class="alert alert-danger" role="alert">
-    error'.$bool_ver.'
-</div>');
+        $_SESSION["login"] = $username;
+        header('Location: ?page=companies');
 }
 }
-echo "<body>
+echo "
     <div id=\"login\">
         <div class=\"container\">
             <div id=\"login-row\" class=\"row justify-content-center align-items-center\">
                 <div id=\"login-column\" class=\"col-md-6\">
-                    <div id=\"login-box\" class=\"col-md-12\">
+                    <div id=\"login-box\" style='background:white; border:none;border-radius:4px;-webkit-box-shadow: 0px 3px 3px -1px rgba(135,135,135,1);
+-moz-box-shadow: 0px 3px 3px -1px rgba(135,135,135,1);
+box-shadow: 0px 3px 3px -1px rgba(135,135,135,1);'class=\"col-md-12\">
                         <form id=\"login-form\" class=\"form\" action=\"\" method=\"post\">
-                            <h3 class=\"text-center text-info\">Login</h3>
+                            <h3 class=\"text-center text-info\">Sign in</h3>
                             <div class=\"form-group\">
-                                <label for=\"username\" class=\"text-info\">Username:</label><br>
-                                <input type=\"text\" name=\"username\" id=\"username\" class=\"form-control\">
+                                <input type=\"text\" placeholder=\"username\"name=\"username\" id=\"username\" class=\"form-control\">
                             </div>
                             <div class=\"form-group\">
-                                <label for=\"password\" class=\"text-info\">Password:</label><br>
-                                <input type=\"password\" name=\"password\" id=\"password\" class=\"form-control\">
+                                <input type=\"password\" placeholder=\"password\"name=\"password\" id=\"password\" class=\"form-control\">
                             </div>
-                            <div class=\"form-group\"><label for=\"remember-me\" class=\"text-info\"></label><br><input type=\"submit\" name=\"submit\" class=\"btn btn-info btn-md\" value=\"log in\">
-                            </div><div id=\"register-link\" class=\"text-right\">
-                                <a href=\"?page=register\" class=\"text-info\">Register here</a>
+                            <div class=\"form-group\"><label for=\"remember-me\" class=\"text-info\"></label><br><input type=\"submit\" name=\"submit\" class=\"btn btn-info btn-md\" value=\"sign in\">
+                            </div><div id=\"register-link\" style='margin-top:-75px;'class=\"text-right\">
+                                <a href=\"?page=register\" class=\"text-info\">Sign up here</a>
                                 <br>
                                 <a href=\"?page=forgot_pass\" class=\"text-info\">forgot the password</a>
                             </div>
@@ -45,13 +44,8 @@ echo "<body>
             </div>
         </div>
     </div>
-</body>
-<style>
-body {
-margin: 0;
-padding: 0;
-background-color: #17a2b8;
-height: 100vh;
-}
-</style>";
+    <div style = \"max-width:510px;  width:$width;padding:$padding; margin:auto;margin-top:20px;\"class=\"alert alert-danger\" role=\"alert\">
+    $error
+</div>
+";
 ?>

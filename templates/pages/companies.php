@@ -1,14 +1,12 @@
 <?php
 require('another_page.php');
-$sql_famous = R::findAll('users', 'ORDER BY `views` DESC LIMIT 6') or die('database problem');
-$sql_date = R::findAll('users', 'ORDER BY `date` LIMIT 6') or die('database problem');
-
+$sql_famous = R::find('users', 'ORDER BY `views`DESC LIMIT 9') or die('database problem');
 function foreach_comp($sql, $name){
 echo '
-<h2 style="margin:auto;width:300px;margin-top:30px">'.$name.'</h2>';
+<h2 align="center"style="margin-top:30px;color:grey">'.$name.'</h2>';
 echo'
 <div class="container">
-  <div class="row">';
+  <div class="row justify-content-start">';
 foreach ($sql as $result) {
 if ($result['company_name']!='none') {
 if ($result["company_img"] != "none") {
@@ -22,9 +20,9 @@ if ($result["avatar"] == "none") {
 $avatar = $result["avatar"];
 $user_company =  $result["login"];
 ?>
-<div class="col-sm">
+<div class="col-4"style="width:20rem">
     <div class="card"style="max-width:27rem">
-        <div class="card-img-top"style="color:white;background:url('users/files/<?=$result["company_img"]?>');height:200px;background-size:cover">
+        <div class="card-img-top"style="color:white;background:url('users/files/<?=$result["company_img"]?>');height:200px;background-size:cover;border-bottom:1px solid #D0D0D0;">
 
         </div>
         <div class="card-body">
@@ -66,8 +64,17 @@ $user_company =  $result["login"];
 </div>
 </div>';
 }
-foreach_comp($sql_date, 'NEWEST');
-foreach_comp($sql_users, 'MOST FAMOUS');
+$best_user_avatar = $sql_best_user['avatar'];
+echo '<div align="center"style="font-size:20px;margin-top:40px;">';
+if($sql_best_user['login'] != $username){
+    echo 'best investors';
+    echo '<div style=\'width:200px;height:200px;margin:auto;margin-top:20px;border-radius:100%;background:url("users/files/'.$best_user_avatar.'");background-size:cover;\'><img style="width:80px;float:right;margin-top:120px;"src="assets/img/medal.svg"></div>
+<b style="font-size:30px;">'.$sql_best_user['login'].'</b>';
+}else{
+    echo 'you are the best investor! congratulations!';
+}
+echo '</div>';
+foreach_comp($sql_famous, 'most famous');
 
 
 ?>

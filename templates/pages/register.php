@@ -5,35 +5,36 @@ $password = filter_var(trim($_POST["password"]), FILTER_SANITIZE_STRING);
 $password_confirm = filter_var(trim($_POST["password_confirm"]), FILTER_SANITIZE_STRING);
 $email = filter_var(trim($_POST["email"]), FILTER_SANITIZE_STRING);
 if (isset($_POST["submit"])){
+    $width = '100%';
+    $padding = '12px';
 if (mb_strlen($username) < 1 || mb_strlen($username) > 90){
-    echo '<div style = "max-width:510px; width:100%; margin:auto;margin-top:20px;"class="alert alert-danger" role="alert">
-    invalid username length
-</div>';
-    exit();
+    $error = 'invalid username length';
 }
-elseif (mb_strlen($password) < 5 || mb_strlen($password) > 30){
-    echo '<div style = "max-width:510px; width:100%; margin:auto;margin-top:20px;"class="alert alert-danger" role="alert">
-    invalid password length
-</div>';
-    exit();
-}
-elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    echo '<div style = "max-width:510px; width:100%; margin:auto;margin-top:20px;"class="alert alert-danger" role="alert">
-    invalid email
-</div>';
-    exit();
+elseif (mb_strlen($password) < 10){
+    $error = 'invalid password length: password must be bigger than 10 symbols';
+}elseif (!preg_match('/[A-z]+/', $password)) {
+    $error ="no letters on password";
+}elseif (!preg_match('/[0-9]+/', $password))
+{
+    $error ="no figures on password";
+}elseif (!preg_match('/[A-Z]+/', $password))
+{
+    $error ="no capital letters on password";
+}elseif (!preg_match('/[a-z]+/', $password))
+{
+    $error ="no lowercase letters on password";
+}elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    $error = 'invalid email';
 }
 elseif ($password!=$password_confirm) {
-    echo '<div style = "max-width:510px; width:100%; margin:auto;margin-top:20px;"class="alert alert-danger" role="alert">
-    passwords do not match
-</div>';
-    exit();
+    $error = 'passwords do not match';
 }elseif(R::find('users', '`login` = ? OR `email` = ?', array($username, $email))){
-    echo '<div style = "max-width:510px; width:100%; margin:auto;margin-top:20px;"class="alert alert-danger" role="alert">
-    this account already exist
-</div>';
+    $error = 'account with this email or password already exist';
+
 }
 else{
+    $width = '0';
+    $padding = '0';
 $rand = bin2hex(random_bytes(4));
 $to = "ataikyd2005@gmail.com";
 $subject = "Email code";
@@ -57,28 +58,26 @@ header('Location: ?page=register_email');
     <div class="container">
         <div id="login-row" class="row justify-content-center align-items-center">
             <div id="login-column" class="col-md-6">
-                <div id="login-box" class="col-md-12">
+                <div id="login-box" style='background:white; border:none;border-radius:4px;-webkit-box-shadow: 0px 3px 3px -1px rgba(135,135,135,1);
+-moz-box-shadow: 0px 3px 3px -1px rgba(135,135,135,1);
+box-shadow: 0px 3px 3px -1px rgba(135,135,135,1);'class="col-md-12">
                     <form id="login-form" class="form" action="" method="post">
-                        <h3 class="text-center text-info">Register</h3>
+                        <h3 class="text-center text-info">Sign up</h3>
                         <div class="form-group">
-                            <label for="username" class="text-info">Username:</label><br>
-                            <input type="text" name="username" id="username" class="form-control">
+                            <input type="text" placeholder="username"name="username" id="username" class="form-control">
                         </div>
                         <div class="form-group">
-                            <label for="email" class="text-info">Email:</label><br>
-                            <input type="text" name="email" id="email" class="form-control">
+                            <input type="text" name="email" placeholder="email"id="email" class="form-control">
                         </div>
                         <div class="form-group">
-                            <label for="password" class="text-info">Password:</label><br>
-                            <input type="password" name="password" id="password" class="form-control">
+                            <input type="password" placeholder="password"name="password" id="password" class="form-control">
                         </div>
                         <div class="form-group">
-                            <label for="password" class="text-info">Confirm password:</label><br>
-                            <input type="password" name="password_confirm" id="password_confirm" class="form-control">
+                            <input type="password" placeholder="confirm password"name="password_confirm" id="password_confirm" class="form-control">
                         </div>
-                        <div class="form-group"><label for="remember-me" class="text-info"></label><br><input type="submit" name="submit" class="btn btn-info btn-md" value="register">
-                        </div><div id="register-link" class="text-right">
-                            <a href="?page=login" class="text-info">Login here</a>
+                        <div class="form-group"><label for="remember-me" class="text-info"></label><br><input type="submit" name="submit" class="btn btn-info btn-md" value="sign up">
+                        </div><div id="register-link" style='margin-top:-75px;'class="text-right">
+                            <a href="?page=login" class="text-info">Sign in here</a>
                             <br>
                             <a href="?page=forgot_pass" class="text-info">forgot the password</a>
                         </div>
@@ -88,13 +87,10 @@ header('Location: ?page=register_email');
         </div>
     </div>
 </div>
+<div style = "max-width:510px;  width:<?=$width?>;padding:<?=$padding?>; margin:auto;margin-top:20px;margin-bottom:20px;"class="alert alert-danger" role="alert">
+<?=$error?>
+</div>
 </body>
 <style>
-    body {
-        margin: 0;
-        padding: 0;
-        background-color: #17a2b8;
-        height: 100vh;
-    }
 </style>
 

@@ -1,5 +1,7 @@
 ErrorDocument 400 http://localhost/denwer/templates/errors/error.html
-ErrorDocument 401 http://localhost/denwer/templates/errors/error.html
 ErrorDocument 404 http://localhost/denwer/templates/
 ErrorDocument 403 http://localhost/denwer/templates/errors/error.html
 ErrorDocument 500 http://localhost/denwer/templates/errors/error.html
+<ifModule mod_headers.c>
+Header set X-XSS-Protection "1; mode=block"
+</IfModule>
