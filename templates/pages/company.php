@@ -1,41 +1,51 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script type="text/javascript">
+  function img (id) {
+    $("html").append("<div class='temno i' style='width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); position: fixed; top: 1px;'>");
+    var back = $("#" + id).css("background-image");
+    var path = back.slice(4, -1);
+    $(".temno").append("<div class='i ne_temno container-fluid col-6' style='opacity: 1; max-width: 700px; margin-top: 5%;'>");
+    $(".ne_temno").append("<img class='i' src="+path+" style='width: 100%; margin-top: 25%;'>");
+    $("html").append("<div style='position: fixed; top: 20px;' class='i text-right container-fluid'><button onclick='sd()' style='background: none; border: none; color: white; cursor: pointer; text-decoration: underline;'>Закрыть</button></div>");
+  }
+</script>
 <?php
 require('another_page.php');
 $username = filter_var(trim($_GET['user']), FILTER_SANITIZE_STRING);
 $file_id = filter_var(trim($_GET['id']), FILTER_SANITIZE_STRING);
-if (!($_SESSION['login']==$_GET['user'] and $sql_user['company_name']=='none')){
-if($username == ''){
-    header('Location: ?page=error');
-}
-$sql = R::find('data_files', 'user=?', array($username));
-if($result = R::findOne('users', 'login=?', array($username))){
+if (!($_SESSION['login']==$_GET['user'] and $sql_user['company_name']=='none')) {
+    
+    if($username == '') {
+        header('Location: ?page=error');
+    }
 
+    $sql = R::find('data_files', 'user=?', array($username));
+    if ($result = R::findOne('users', 'login=?', array($username))) {
 
-if(!R::findOne('comp_views', 'user=? AND comp=?', array($_SESSION['login'], $username)) and $_SESSION['login']!=''){
-    $comp_views = R::xdispense('comp_views');
-    $comp_views ->user = $_SESSION['login'];
-    $comp_views ->comp = $username;
-    R::store($comp_views);
-    R::exec("UPDATE `users` SET `views`=? WHERE `login`= ?", array($result['views']+1, $username));
-}
+    if (!R::findOne('comp_views', 'user=? AND comp=?', array($_SESSION['login'], $username)) and $_SESSION['login']!='') {
+        $comp_views = R::xdispense('comp_views');
+        $comp_views ->user = $_SESSION['login'];
+        $comp_views ->comp = $username;
+        R::store($comp_views);
+        R::exec("UPDATE `users` SET `views`=? WHERE `login`= ?", array($result['views']+1, $username));
+    }
 
-    if (isset($_POST['delete_account'])){
+    if (isset($_POST['delete_account'])) {
         $username = $_SESSION['login'];
         foreach ($sql as $result_files) {
-            if(!unlink('users/files/' . $result_files["files"] . '')){
+            if(!unlink('users/files/' . $result_files["files"] . '')) {
                 die('file error');
             }
         }
 
-        if(!unlink('users/files/' . $sql_user["company_img"] . '') and !unlink('users/files/' . $sql_user["avatar"] . ''))
+        if (!unlink('users/files/' . $sql_user["company_img"] . '') and !unlink('users/files/' . $sql_user["avatar"] . '')) 
             die('file error');
-
-
-        $result_files = R::exec("DELETE FROM `data_files` WHERE `user` = ?", array($username)) or die("Error ");
-        $result = R::exec("DELETE FROM `users` WHERE `login` = ?", array($username)) or die("Error ");
-        session_destroy();
-        header('Location: ?page=companies');
-        exit;
-    }
+            $result_files = R::exec("DELETE FROM `data_files` WHERE `user` = ?", array($username)) or die("Error ");
+            $result = R::exec("DELETE FROM `users` WHERE `login` = ?", array($username)) or die("Error ");
+            session_destroy();
+            header('Location: ?page=companies');
+            exit;
+        }
 if (isset($_POST['delete'])){
     $username_del = $_SESSION['login'];
     $sqla = R::find('data_files','`user`=? AND `id`=?', array($username_del, $_GET['id'])) or die('error database');
@@ -63,41 +73,20 @@ echo "
         $result['avatar'] = 'users/defaults/avatar.png';
     }
 ?>
-<div style='max-width:1000px;margin:auto;background:white;'>
-  <div style='width:100%;height:300px;background:url("users/files/<?=$result['company_img']?>");background-size:cover'>
+<div class="container-fluid col-md-5 col-xs-8" style='margin-top: 20px; background: #FFF; padding: 0;'>
+  <div style='width:100%;height:300px;background:url("users/files/<?=$result['company_img']?>") 50% 50%;background-size:cover'>
   </div>
     <div style='width:150px;height:150px;background:url("users/files/<?=$result['avatar']?>");background-size:cover;border-radius:100%;border:3px solid white;margin-top:-60px;float:right;margin-right:70px;'></div>
     <div style="float:right;padding:10px;"><h3><?=$result['login']?></h3></div>
     <h2 style="text-transform:uppercase;padding:15px;font-weight:bold"><?=$result['company_name']?></h2>
     <h4><div style="padding:15px;margin-top:-35px;"><b><?=$result['problem']?></b></div></h4>
 
-    <div style="padding:15px;word-wrap: break-word;margin-top:-35px;"><?=$result['company_desc']?></div>
-    <h5 style="padding:15px;">need <?=$result['futur_money']?>$</h5>
-    <h5 style="padding-left:15px;">have <?=$result['money']?>$</h5>
-    <?php
-    echo '<div style="padding:15px">';
-    if ($result["futur_money"] != 0 and $result["money"] != 0) {
-        $zagruzk = $result["futur_money"] / 100;
-        $progress = round($result["money"] / $zagruzk);
-        echo '
-      <div class="progress">
- 
-   <div class="progress-bar"
-      role="progressbar"
-      aria-valuenow="' . $result["money"] . '"
-      aria-valuemin="0" aria-valuemax="' . $result["futur_money"] . '"
-      style="width:' . $progress . '%">
-      ' . $progress . '%
-   </div>
- 
-</div>';
-    } else {
-        echo 'no progress<br>';
-    }
-    echo '</div>';
+    <div style="padding:15px;word-wrap: break-word;margin-top:-20px;font-family: Segoe UI; font-size: 1.1em; line-height: 2;"><?=$result['company_desc']?></div>
+<?php
 }
-
-
+$futur_money = $result["futur_money"];
+$money = $result["money"];
+$i = 0;
 if (isset($_POST['delete_all'])){
     foreach ($sql as $result) {
         if($result["files"]!=""){
@@ -117,10 +106,7 @@ if (isset($_POST['delete_all'])){
     white-space:nowrap;'>";
 
     foreach ($sql as $result) {
-    ?><div style='display: inline-block;
-    vertical-align: top;
-    padding:10px;
-    height:100px;'><div class='img_sel'style='height:100%;background:url("users/files/<?=$result["files"]?>")100% 100% no-repeat;background-size:cover;'alt='".$result["files"]."'></div>
+    ?><div class='container' id="<?=$i?>" onclick="img($(this).attr('id'));" style='display: inline-block; vertical-align: top; height:100px; width:150px;background:url("users/files/<?=$result["files"]?>")100% 100% no-repeat;background-size:cover;'alt='".$result["files"]."'></div>
 
     <?php
     if($username == $_SESSION['login']){
@@ -130,13 +116,13 @@ if (isset($_POST['delete_all'])){
 <input type='submit'value='delete' name='delete'>
     </form>";
     }
-    echo"</div>";
+    $i++;
   }
-  echo'</div>';
+  echo "</div>";
 }
 
 ?>
-<form method = "post"style="padding:20px;float:right">
+<form method = "post">
 <?php
 if($username == $_SESSION['login']){
 ?>
@@ -147,21 +133,23 @@ if($username == $_SESSION['login']){
     <?php
 }else{
 ?>
-  <input type="submit" name="donate" value="donate">
+
 <?php
 }
 ?>
+<div class="container-fluid" style="background: #f7f7f7; width: 100%; margin: 0;">
+<p class="text-center" style="font-size: 1.5em; padding-top: 20px;">This company need <?=$futur_money?>$. </p>
+<p class="text-center" style="font-size: 1.5em;">This company have <?=$money?>$. </p>
+<p class="text-center" style="font-size: 1.5em;">This company needs your help. </p>
+<p class="text-center" style="padding-bottom: 20px;">
+<input type="submit" class="btn btn-success" name="donate" value="donate">
+</p>
+</div>
 </form>
 </div>
 <style>
-    .img_sel{
-        transition: 0.5s;
-        background:rgb(0,0,0,0.5);
-        opacity:0;
-        cursor:pointer
-    }
-    .img_sel:hover{
-        opacity: 100;
+    body {
+      background: #f1f1f1;
     }
 </style>
 <?php
@@ -172,3 +160,9 @@ if($username == $_SESSION['login']){
     echo 'you have no company<br>
     <a href="?page=create_company">create company</a>';
 }
+?>
+<script type="text/javascript">
+  function sd () {
+    $(".i").detach();  
+  }
+</script>
