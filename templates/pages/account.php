@@ -9,8 +9,6 @@ if($_GET['user']==''){
 }else{
     $username_account = $_GET['user'];
 }
-
-
 if($username == ''){
     header('Location: ?page=login');
 }else {
@@ -23,21 +21,16 @@ if($username == ''){
             $username_acc = $result['login'];
             $link = "?page=company&user=" . $username_acc;
             echo '<div style="background: url(users/files/' . $result['avatar'] . ') 50% 50%; height: 230px; background-size: cover;"> </div>';
-            if ($result['company_name'] != 'none') {
-                echo '
-    ' . $username_acc . ', company: <a href=' . $link . '>' . $result['company_name'] . '</a>';
-            }
-            	echo "<p class='text-center' style='font-size: 1.1em;margin: 5px;'>".$user_acc."</p>";
-
+            	echo "<p class='text-center' style='font-size: 1.1em;margin: 10px;'>".$user_acc."</p>";
         }
 
 
     $sql_invest = R::findAll('tbl_product_detail') or die('database problem');
     if ($username == $user_acc) {
         echo '<button class="btn btn-primary btn-block"><a href="?page=create_avatar" style="color: #fff; text-decoration: none;">Change avatar</a></button>';
-        echo "</div>";
-        echo "</div>";
     }
+    echo "</div>";
+        echo "</div>";
     echo '<div class="col-8" style="margin: 10px; background: #ffffff; padding: 10px; border-radius: 5px; width: 250px; height: 100%;">
     <p style="margin-left: 15px; margin-top: 5px; font-size: 1.1em;">My help</p>
 				<hr>';
@@ -46,11 +39,11 @@ if($username == ''){
         if ($username_account == $result["investor_name"]) {
             $investor_name = $result["investor_name"];
             echo '<div class="jumbotron" style="padding: 2rem 1rem;">
-            <h3>You sent the company "'. $result["comp_name"] .'"' . $result["donated_money"] .'.</h3>
+            <h3>You sent the company "'. $result["comp_name"] .'"' . $result["donated_money"] .'$.</h3>
             <hr>
-            <button class="btn btn-dark"><a href="?page=company&user='.$result['corp_name_user'].'">go to page</a></button>
+            <button class="btn btn-dark"><a href="?page=company&user='.$result['comp_name_user'].'"  style="color: #fff;">go to page</a></button>
       <p class="text-right text-muted">' . $result["date"] . '</p>
-  </div>';
+    </div>';
  	$i++;		
         }
     }
