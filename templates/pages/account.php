@@ -1,3 +1,7 @@
+<div class="container" style="min-width: 1100px;">
+	<div class="row">
+<div class="col-3">
+<div style="margin: 10px; background: #ffffff; padding: 10px; border-radius: 5px; width: 250px; height: 325px;">
 <?php
 require('another_page.php');
 if($_GET['user']==''){
@@ -18,58 +22,44 @@ if($username == ''){
             }
             $username_acc = $result['login'];
             $link = "?page=company&user=" . $username_acc;
-            echo '<img class="account"src="users/files/' . $result['avatar'] . '">';
+            echo '<div style="background: url(users/files/' . $result['avatar'] . ') 50% 50%; height: 230px; background-size: cover;"> </div>';
             if ($result['company_name'] != 'none') {
                 echo '
     ' . $username_acc . ', company: <a href=' . $link . '>' . $result['company_name'] . '</a>';
             }
+            	echo "<p class='text-center' style='font-size: 1.1em;margin: 5px;'>".$user_acc."</p>";
 
         }
 
 
     $sql_invest = R::findAll('tbl_product_detail') or die('database problem');
     if ($username == $user_acc) {
-        echo '<br><a href="?page=create_avatar">create avatar</a>';
+        echo '<button class="btn btn-primary btn-block"><a href="?page=create_avatar" style="color: #fff; text-decoration: none;">Change avatar</a></button>';
+        echo "</div>";
+        echo "</div>";
     }
-    echo '
-<h1>TRANSACTIONS</h1>
-<table class="table table-dark">
-  <thead>
-    <tr>
-      <th scope="col">company name</th>
-      <th scope="col">investor</th>
-      <th scope="col">donated money</th>
-      <th scope="col">currency</th>
-      <th scope="col">date</th>
-    </tr>
-  </thead>';
+    echo '<div class="col-8" style="margin: 10px; background: #ffffff; padding: 10px; border-radius: 5px; width: 250px; height: 100%;">
+    <p style="margin-left: 15px; margin-top: 5px; font-size: 1.1em;">My help</p>
+				<hr>';
+	$i = 0;
     foreach ($sql_invest as $result) {
         if ($username_account == $result["investor_name"]) {
             $investor_name = $result["investor_name"];
-            echo '<thead>
-<tbody>
-    <tr>
-      <td>' . $result["comp_name"] . '</td>
-      <td><a href="?page=account&user=' . $investor_name . '">' . $investor_name . '</a></td>
-      <td>' . $result["donated_money"] . '</td>
-      <td>' . $result["currency"] . '</td>
-      <td>' . $result["date"] . '</td>
-    </tr>
-  </tbody>
-  </thead>
-';
-            $total_money = $total_money + $result["donated_money"];
+            echo '<div class="jumbotron" style="padding: 2rem 1rem;">
+            <h3>You sent the company "'. $result["comp_name"] .'"' . $result["donated_money"] .'.</h3>
+            <hr>
+            <button class="btn btn-dark"><a href="?page=company&user='.$result['corp_name_user'].'">go to page</a></button>
+      <p class="text-right text-muted">' . $result["date"] . '</p>
+  </div>';
+ 	$i++;		
         }
     }
-    echo "<thead><tr><th scope='col'>total</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-      <td>$total_money </td>
-    </tr>
-  </tbody>
-</table>";
+    if ($i == 0) {
+    	echo "<h3 class='text-center text-muted'>No donations.</h3>";
+    }
+    echo "</div>";
+    echo "</div>";
+    echo "</div>";
     } else {
         echo "'account is'nt exist or deleted";
     }
