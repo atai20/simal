@@ -1,0 +1,27 @@
+* {
+	margin:0;
+	padding:0;
+	outline:none;
+	
+}
+.content_top {
+	border-radius:2px;
+	font-family:"Segoe UI", sans-serif;
+	border:3px solid #00a2e7;
+	position:relative;
+	padding:8px;
+	min-width:900px;
+	margin:8px;
+}
+.top {
+	padding:2px;
+	border-bottom:2px solid #00a2e7;
+}
+.top>div {
+	font-size:1.1em;
+	text-align:center;
+	display:inline-table;
+	position:relative;
+	width:300px;
+	border-right:2px solid #00a2e7;
+}

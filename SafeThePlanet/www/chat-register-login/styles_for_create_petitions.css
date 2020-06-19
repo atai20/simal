@@ -1,0 +1,143 @@
+* {
+	margin:0;
+	padding:0;
+	border:none;
+}
+body {
+	background:#e7e7e7;
+	align:center;
+	float:center;
+	max-width : 100%;
+	height : 100%;
+	color : #333;
+	font-size : 1em;
+	font-family : "Segoe UI", sans-serif;
+}
+html {
+	max-width : 100%;
+	height:100%;
+}
+a {
+	color:#62acfa;
+	text-decoration: none;
+}
+header {
+	background:#00a2e7;
+	align: center;
+	float:center;
+	min-width: 1350px;
+	min-height:50px;
+	font-family: 'Open Sans', arial;
+} 
+#logo_picture {
+	bottom:8px;
+	position:relative;
+	float: left;
+	padding-left:50px;
+	width: 300px;
+	height: auto;
+} 
+.right_header {
+	float:right;
+	position:relative;
+	display:inline-block;
+	margin-right:20px;
+	margin-top:12px;
+}
+.akkaynt {
+	color:white;
+}
+.right_header>a>span {
+	font-size:1.2em;
+	position:relative;
+}
+#center_header {
+	margin-left:6%;
+	float:left;
+	color:white;
+}
+#center_header>a {
+	color:white;
+	margin-left:10px;
+	margin-right:10px;
+}
+.menu {
+	font-size:1.2em;
+	line-height:50px;
+}
+.center {
+	font-size:1.3em;
+	box-shadow: 0 3px 1px -2px rgba(0,0,0,.14), 0 2px 2px 0 rgba(0,0,0,.098), 0 1px 5px 0 rgba(0,0,0,.084);
+	margin:30px;
+	position:absolute;
+	background:white;
+	height:1200px;
+	width:800px;
+	left:50%;
+    transform: translate(-50%);
+}
+#opisanie {
+	top:10px;
+	position:relative;
+	margin:10px;
+	margin-left:20px;
+}
+.petition_maker {
+	height:150px;
+	width:760px;
+	top:10px;
+	position:relative;
+	margin:10px;
+	margin-left:20px;
+	border-bottom:1px solid silver;
+}
+.textarea {
+	top:40px;
+	position:relative;
+	resize:none;
+	right:40px;
+	font-size:1em;
+	outline:none;
+	float:right;
+	width:600px;
+	border-bottom:1px solid silver;
+}
+.textarea:focus {
+	border-bottom:1px solid #00a2e7;
+}
+#file {
+	opacity:0;
+}
+.button {
+	cursor:pointer;
+	position:absolute;
+	font-size:1em;
+	color:white;
+	background:#00a2e7;
+	height:30px;
+	border-radius:3px;
+	margin-left:5%;
+	width:90%;
+	margin-top:28%;
+}
+#done {
+	box-shadow: 0 3px 1px -2px rgba(0,0,0,.14), 0 2px 2px 0 rgba(0,0,0,.098), 0 1px 5px 0 rgba(0,0,0,.084);
+	margin-bottom:10px;
+	position:relative;
+	top:50px;
+	background:white;
+	height:60px;
+	width:800px;
+}
+#done_button {
+	font-size:0.8em;
+	background:#00a2e7;
+	color:white;
+	cursor:pointer;
+	outline:none;
+	border-radius:3px;
+	float:right;
+	margin:10px 10px 30px 10px;
+	height:60%;
+	width:12%;
+}

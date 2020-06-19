@@ -1,0 +1,55 @@
+ * {
+	margin:0;
+	padding:0;
+}
+html {
+	height:100%;
+}
+a {
+	color:#62acfa;
+	text-decoration: none;
+}
+header {
+	background:#00a2e7;
+	align: center;
+	float:center;
+	min-width: 1350px;
+	min-height:50px;
+	font-family: 'Open Sans', arial;
+} 
+#logo_picture {
+	bottom:8px;
+	position:relative;
+	float: left;
+	padding-left:50px;
+	width: 300px;
+	height: auto;
+} 
+.right_header {
+	float:right;
+	position:relative;
+	display:inline-block;
+	margin-right:20px;
+	margin-top:12px;
+}
+.akkaynt {
+	color:white;
+}
+.right_header>a>span {
+	font-size:1.2em;
+	position:relative;
+}
+#center_header {
+	margin-left:6%;
+	float:left;
+	color:white;
+}
+#center_header>a {
+	color:white;
+	margin-left:10px;
+	margin-right:10px;
+}
+.menu {
+	font-size:1.2em;
+	line-height:50px;
+}

@@ -1,0 +1,63 @@
+
+html {
+	height:100%;
+}
+body {
+	background:white;
+	align:center;
+	float:center;
+	width : 100%;
+	height : 100%;
+	color : #333;
+	font-size : 1em;
+	font-family : "Segoe UI", sans-serif;
+}
+a {
+	color:#62acfa;
+	text-decoration: none;
+}
+#zagalovok {
+	background:white;
+	min-width:1350px;
+	height:430px;
+}
+#lozyng {
+	text-align:center;
+	height:250px;
+	float:left;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width:100%;
+}
+#search {
+	background:#f7f7f7;
+	float:left;
+	border-radius:6px;
+	height:70%;
+	width:70%;
+	position:relative;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+#file {
+		width:100%;
+      opacity:0;
+      filter:alpha(opacity:0);
+      cursor:pointer;
+      padding:0px;
+      margin:0px;
+      border:none;
+}
+#photo {
+	border-radius:6px;
+	margin:6px;
+	font-weight:lighter;
+	font-size:1.3em;
+	border:none;
+	background:#00a2e7;
+	color:white;
+	width:99%;
+	height:100%;
+	outline:none;
+}

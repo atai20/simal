@@ -1,0 +1,128 @@
+* {
+	margin:0;
+	padding:0;
+}
+html {
+	height:100%;
+}
+body {
+	align:center;
+	float:center;
+	width : 100%;
+	height : 100%;
+	color : #f2f2f2;
+	background :white;
+	font-size : 1em;
+	font-family : "Segoe UI", sans-serif;
+}
+a {
+	color:#62acfa;
+	text-decoration: none;
+}
+#zagalovok {
+	min-width:1350px;
+	height:430px;
+	background:#333;
+}
+#lozyng {
+	text-align:center;
+	height:270px;
+	float:left;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width:100%;
+}
+#zagalovok>div>h1 {
+	color:white;
+	font-size:4.6em;
+}
+#search {
+	float:left;
+	border-radius:6px;
+	height:50px;
+	width:700px;
+	background:white;
+	position:relative;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+#poisk {
+	font-size:0.9em;
+	border:none;
+	outline:none;
+	margin:5px;
+	height:80%;
+	width:80%;
+	padding-left:5px;
+}
+#done {
+	cursor:pointer;
+	float:right;
+	outline:none;
+	font-size:0.9em;
+	color:white;
+	border-radius:6px;
+	border:none;
+	background:#00a2e7;
+	margin:5px;
+	height:80%;
+	width:110px;
+}
+input[type=text]::-ms-clear {  
+	display: none; 
+	width : 0; 
+	height: 0; 
+}
+input[type=text]::-ms-reveal {
+	display: none; 
+	width : 0; 
+	height: 0;
+}
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-results-button,
+input[type="search"]::-webkit-search-results-decoration {
+	display: none; 
+}
+#world_problems {
+	top:3%;
+	text-align:center;
+	margin:auto;
+	float:left;
+	min-height:50px;
+	width:90%;
+	position:relative;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.problem {
+	margin:0 30px;
+	color:#ccc;
+}
+.problem:hover {
+	text-decoration:underline;
+}
+.center {
+	max-width:1900px;
+	min-width:1300px;
+	margin:auto;
+}
+.body {
+	border-radius:3px;
+	color:#333;
+	margin:10px;
+	padding:2px;
+	min-width:98%;
+	background:#e1e1e1;
+}
+.body>div {
+	text-align:center;
+	min-width:5%;
+	word-wrap:break-word;
+	padding:10px;
+	font-size:1.1em;
+	display:inline-table;
+	position:relative;
+	border-right:1px solid silver;
+}
